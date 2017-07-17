@@ -19,3 +19,11 @@ extension UITextField {
         self.autocorrectionType = .no
     }
 }
+
+extension UILabel {
+    func setCustomStyleSmallTitle() {
+        self.font = UIFont(name: self.font.fontName, size: 10)
+        self.textColor = .white
+        self.backgroundColor = .black
+    }
+}

@@ -13,4 +13,12 @@ extension Auth {
     class func isLoggedIn() -> Bool{
         return Auth.auth().currentUser != nil
     }
+    
+    class func signOut() {
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print("Unable to Sign out")
+        }
+    }
 }

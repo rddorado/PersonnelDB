@@ -29,11 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        signOut()
-    }
-    
-    func applicationWillTerminate(_ application: UIApplication) {
-        signOut()
+        Auth.signOut()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -48,19 +44,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     fileprivate func buildRootViewController() -> UIViewController {
         let rootViewController = UINavigationController(rootViewController: PersonnelListViewController())
+        rootViewController.navigationBar.isTranslucent = false;
         return rootViewController
     }
     
     fileprivate func showSignIn() {
-        
         window?.rootViewController?.present(SignInViewController(), animated: false, completion: nil)
-    }
-    
-    fileprivate func signOut() {
-        do {
-            try Auth.auth().signOut()
-        } catch {
-            print("Unable to Sign out")
-        }
     }
 }

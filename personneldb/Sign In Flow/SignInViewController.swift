@@ -19,8 +19,9 @@ import Firebase
 import SnapKit
 
 @objc(SignInViewController)
-class SignInViewController: UIViewController, UITextFieldDelegate {
+class SignInViewController: UIViewController, UITextFieldDelegate, WaitViewPresentable {
     
+    var ref: DatabaseReference?
     let titleLabel: UILabel = {
         let label = UILabel(frame: CGRect.zero)
         label.text = "Personnel Database"
@@ -42,8 +43,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         textField.setCustomStyle()
         return textField
     }()
-    let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-    let spinnerView:UIView = {
+    var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    var waitView:UIView = {
         let view = UIView(frame: CGRect.zero)
         view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         return view
@@ -57,8 +58,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         button.clipsToBounds = true
         return button
     }()
-    
-    var ref: DatabaseReference?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,11 +81,11 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        self.showSpinner()
+        self.showWaitView()
         
         Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
             
-            self.hideSpinner()
+            self.hideWaitView()
             
             guard let user = user, error == nil else {
                 self.showMessagePrompt(error!.localizedDescription)
@@ -103,16 +102,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         })
     }
     
-    private func showSpinner() {
-        spinner.startAnimating()
-        spinnerView.isHidden = false
-    }
-    
-    private func hideSpinner() {
-        spinner.stopAnimating()
-        spinnerView.isHidden = true
-    }
-    
     private func showMessagePrompt(_ message: String) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -126,12 +115,11 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(passwordField)
         view.addSubview(passwordField)
         view.addSubview(signInButton)
-        spinnerView.addSubview(spinner)
-        view.addSubview(spinnerView)
+        buildWaitView(inside: view)
         
         signInButton.addTarget(self, action: #selector(didTapEmailLogin(_:)), for: .touchUpInside)
         view.backgroundColor = .white
-        self.hideSpinner()
+        self.hideWaitView()
     }
     
     private func buildConstraints() {
@@ -155,13 +143,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
             make.height.equalTo(50)
             make.left.right.equalTo(emailField)
         }
-        spinnerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        spinner.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.size.equalTo(CGSize(width: 10, height: 10))
-        }
     }
     
     private func signinComplete(animated: Bool) {
@@ -177,5 +158,38 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         didTapEmailLogin(textField)
         return true
+    }
+}
+
+protocol WaitViewPresentable {
+    var waitView: UIView { get set }
+    var activityIndicator: UIActivityIndicatorView { get set }
+    func showWaitView()
+    func hideWaitView()
+}
+
+extension WaitViewPresentable {
+    func showWaitView() {
+        activityIndicator.startAnimating()
+        waitView.isHidden = false
+    }
+    
+    func hideWaitView() {
+        activityIndicator.stopAnimating()
+        waitView.isHidden = true
+    }
+    
+    func buildWaitView(inside view: UIView) {
+        waitView.isHidden = true
+        waitView.addSubview(activityIndicator)
+        view.addSubview(waitView)
+        
+        waitView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(CGSize(width: 10, height: 10))
+        }
     }
 }
