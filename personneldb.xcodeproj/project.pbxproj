@@ -22,6 +22,7 @@
 		D1BFA6531F1C4C100055DBD6 /* AuthExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFA6521F1C4C100055DBD6 /* AuthExtensions.swift */; };
 		D1BFA6551F1C4C2C0055DBD6 /* CustomStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFA6541F1C4C2C0055DBD6 /* CustomStyleExtensions.swift */; };
 		D1BFA6581F1C7F050055DBD6 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFA6571F1C7F050055DBD6 /* Person.swift */; };
+		D1BFA65D1F1D93780055DBD6 /* WaitViewPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BFA65C1F1D93780055DBD6 /* WaitViewPresentable.swift */; };
 		EE7213739CBB795D7E03FB83 /* Pods_personneldb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD53FB984B5A69DCC37B0B1 /* Pods_personneldb.framework */; };
 		FFEE3432DAA9B4695ECCE51F /* Pods_personneldbTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF8BD3D7A5C27E43E60D040 /* Pods_personneldbTests.framework */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		D1BFA6521F1C4C100055DBD6 /* AuthExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthExtensions.swift; sourceTree = "<group>"; };
 		D1BFA6541F1C4C2C0055DBD6 /* CustomStyleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStyleExtensions.swift; sourceTree = "<group>"; };
 		D1BFA6571F1C7F050055DBD6 /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		D1BFA65C1F1D93780055DBD6 /* WaitViewPresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitViewPresentable.swift; sourceTree = "<group>"; };
 		EC79CA28B571856CD1B2FA3F /* Pods-personneldb.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-personneldb.release.xcconfig"; path = "Pods/Target Support Files/Pods-personneldb/Pods-personneldb.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,6 +155,7 @@
 				D1BFA6511F1C4BF20055DBD6 /* Extensions */,
 				D1BFA6561F1C7EF60055DBD6 /* Model */,
 				D1BFA6501F1C4B7B0055DBD6 /* Personnel Flow */,
+				D1BFA65B1F1D93410055DBD6 /* ProtocolExtensions */,
 				D1BFA64F1F1C4B590055DBD6 /* Sign In Flow */,
 				D1BFA6121F179E910055DBD6 /* AppDelegate.swift */,
 				D1BFA6191F179E910055DBD6 /* Assets.xcassets */,
@@ -213,8 +216,16 @@
 			children = (
 				D1BFA6571F1C7F050055DBD6 /* Person.swift */,
 			);
-			name = Model;
 			path = Model;
+			sourceTree = "<group>";
+		};
+		D1BFA65B1F1D93410055DBD6 /* ProtocolExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				D1BFA65C1F1D93780055DBD6 /* WaitViewPresentable.swift */,
+			);
+			name = ProtocolExtensions;
+			path = ProtocolExtensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -504,6 +515,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1BFA6581F1C7F050055DBD6 /* Person.swift in Sources */,
+				D1BFA65D1F1D93780055DBD6 /* WaitViewPresentable.swift in Sources */,
 				D1BFA6531F1C4C100055DBD6 /* AuthExtensions.swift in Sources */,
 				D1BFA6131F179E910055DBD6 /* AppDelegate.swift in Sources */,
 				D1BFA64C1F1C3F830055DBD6 /* PersonnelDetailViewController.swift in Sources */,

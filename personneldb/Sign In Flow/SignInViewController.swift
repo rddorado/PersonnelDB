@@ -160,36 +160,3 @@ class SignInViewController: UIViewController, UITextFieldDelegate, WaitViewPrese
         return true
     }
 }
-
-protocol WaitViewPresentable {
-    var waitView: UIView { get set }
-    var activityIndicator: UIActivityIndicatorView { get set }
-    func showWaitView()
-    func hideWaitView()
-}
-
-extension WaitViewPresentable {
-    func showWaitView() {
-        activityIndicator.startAnimating()
-        waitView.isHidden = false
-    }
-    
-    func hideWaitView() {
-        activityIndicator.stopAnimating()
-        waitView.isHidden = true
-    }
-    
-    func buildWaitView(inside view: UIView) {
-        waitView.isHidden = true
-        waitView.addSubview(activityIndicator)
-        view.addSubview(waitView)
-        
-        waitView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        activityIndicator.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.size.equalTo(CGSize(width: 10, height: 10))
-        }
-    }
-}

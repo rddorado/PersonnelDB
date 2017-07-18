@@ -10,18 +10,24 @@ import UIKit
 import SnapKit
 import Firebase
 
+enum SearchType {
+    case name
+    case job
+    case skills
+    case years
+    case all
+}
+
 class PersonnelListViewController: UIViewController, WaitViewPresentable {
     var ref: DatabaseReference?
     var isKeyboardShown: Bool = false
+    var persons:[Person]?
     var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     var waitView:UIView = {
         let view = UIView(frame: CGRect.zero)
         view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         return view
     }()
-    
-    var persons:[Person]?
-
     lazy var searchbar: UISearchBar = {
         let searchbar = UISearchBar(frame: CGRect.zero)
         searchbar.placeholder = "Search for personnel detail"
@@ -31,7 +37,6 @@ class PersonnelListViewController: UIViewController, WaitViewPresentable {
         searchbar.showsCancelButton = true
         return searchbar
     }()
-    
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: CGRect.zero)
         tableView.dataSource = self
@@ -112,7 +117,7 @@ class PersonnelListViewController: UIViewController, WaitViewPresentable {
 }
 
 extension PersonnelListViewController {
-    func search(for searchString: String) {
+    fileprivate func search(for searchString: String) {
         DispatchQueue.global(qos: .background).async {
             guard let localRef = self.ref?.child("personneldb").child("personnel") else {
                 return
@@ -136,7 +141,7 @@ extension PersonnelListViewController {
         }
     }
     
-    func filter(results: [Person], with searchString: String, type: SearchType = .all) {
+    fileprivate func filter(results: [Person], with searchString: String, type: SearchType = .all) {
     
         var filtered = [Person]()
         
@@ -144,29 +149,50 @@ extension PersonnelListViewController {
             filtered = results
         } else {
             filtered = results.filter { person in
-                person.name.lowercased().contains(searchString) ||
-                person.jobTitle.lowercased().contains(searchString) ||
-                person.yearsOfExperience.lowercased().contains(searchString) ||
-                person.description.lowercased().contains(searchString)
+                self.filter(person: person, searchString: searchString, type: type)
             }
         }
         self.updateView(with: filtered)
     }
 
-    func updateView(with persons: [Person]) {
+    
+    fileprivate func filter(person: Person, searchString: String, type: SearchType) -> Bool {
+        var isNameMatched = person.name.lowercased().contains(searchString)
+        var isJobMatched = person.jobTitle.lowercased().contains(searchString)
+        var isYearsOfExperieceMatched = person.yearsOfExperience.lowercased().contains(searchString)
+        var isSkilsMatched = person.description.lowercased().contains(searchString)
+        
+        switch type {
+        case .name:
+            isJobMatched = false
+            isYearsOfExperieceMatched = false
+            isSkilsMatched = false
+        case .job:
+            isNameMatched = false
+            isYearsOfExperieceMatched = false
+            isSkilsMatched = false
+        case .years:
+            isNameMatched = false
+            isJobMatched = false
+            isSkilsMatched = false
+        case .skills:
+            isNameMatched = false
+            isJobMatched = false
+            isYearsOfExperieceMatched = false
+        default:
+            break
+        }
+        
+        return isNameMatched || isJobMatched || isYearsOfExperieceMatched || isSkilsMatched
+    }
+    
+    fileprivate func updateView(with persons: [Person]) {
         DispatchQueue.main.async {
             self.persons = persons
             self.tableView.reloadData()
             self.hideWaitView()
         }
     }
-}
-
-enum SearchType {
-    case name
-    case description
-    case years
-    case all
 }
 
 extension PersonnelListViewController: UITableViewDataSource {
